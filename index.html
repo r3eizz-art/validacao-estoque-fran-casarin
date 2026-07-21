@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Prévia de validação — Estoque Fran Casarin</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+      .preview-notice { position:fixed; right:18px; bottom:18px; z-index:100; max-width:330px; padding:11px 13px; border-radius:8px; background:#191814; color:#f7f0e3; border:1px solid rgba(185,135,40,.7); box-shadow:0 12px 30px rgba(0,0,0,.25); font:12px/1.35 Inter,Arial,sans-serif; }
+      .preview-notice strong { color:#f4c568; display:block; margin-bottom:2px; }
+    </style>
+  </head>
+  <body>
+    <div id="preview-root"></div>
+    <div class="preview-notice"><strong>Prévia para validação</strong>Dados de teste. Alterações feitas aqui ficam somente neste navegador e não vão para o sistema oficial.</div>
+    <script>
+      window.__estoqueAccess = {
+        profile: { id: 'preview', email: 'validacao@francasarin.local', nome: 'Prévia de validação', papel: 'administrador', ativo: true },
+        canEdit: true,
+        canManageUsers: false,
+        listUsers: async () => [], createUser: async () => ({}), updateUser: async () => {}, deleteUser: async () => ({}), resetPassword: async () => ({}), listAudit: async () => []
+      };
+      window.__estoqueSessionEmail = 'Prévia de validação';
+      fetch('./legacy-body.html', { cache: 'no-store' })
+        .then((response) => response.ok ? response.text() : Promise.reject(new Error('Não foi possível carregar a interface.')))
+        .then((markup) => {
+          document.getElementById('preview-root').innerHTML = markup;
+          const script = document.createElement('script');
+          script.src = './legacy-app.js';
+          document.body.appendChild(script);
+        })
+        .catch((error) => { document.getElementById('preview-root').textContent = error.message; });
+    </script>
+  </body>
+</html>
